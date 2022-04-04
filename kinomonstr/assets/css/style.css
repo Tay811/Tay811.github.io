@@ -94,6 +94,10 @@ html, body {
     background-color: #f9f9f9;
 }
 
+.panel-info {
+    margin-top: 80px;
+}
+
 .panel-info>.panel-heading{
     background-color: #f0ad4e;
     color: white;
