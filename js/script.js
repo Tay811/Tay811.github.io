@@ -17,84 +17,9 @@ counters.forEach( (item, i) => {
     lines[i].style.width = item.innerHTML;
 });
 
-$(document).ready(function(){
-   
-
-});
-
- 
-    $('[data-modal=contact]').on('click', function() {
-        $('.overlay, #thanks').fadeIn('slow');
-    });
-    $('.modal__close').on ('click', function() {
-        $('.overlay, #thanks').fadeOut('slow')
-    }); 
-
-
-
-     function validateForms(form){
-        $(form).validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 2
-                },
-                
-                email: {
-                    required: true,
-                    email: true
-                },
-                text: {
-                    required: true,
-                }
-            },
-            messages: {
-                name: {
-                    required: "Пожалуйста, введите свое имя",
-                    minlength: jQuery.validator.format("Введите {0} символа!")
-                  },
-                email: {
-                    required: "Пожалуйста, введите свою почту",
-                    email: "Неправильно введен адрес почты"
-                  },
-                text: { 
-                    required: "Ваше сообщение"
-                },
-                
-            }
-        });
-    };
-
-    validateForms('#valid');  
-     
-   
-
-     $('form').submit(function(e) {
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "mailer/smart.php",
-            data: $(this).serialize()
-        }).done(function() {
-            $(this).find("input").val("");
-            $('#contacts__form').fadeOut(); 
-             $('#thanks').fadeIn('slow');
-
-            $('form').trigger('reset');
-        });
-        return false; 
-
-        
-
-    
-    new WOW().init();  
-
- }); 
-
-
 // Modal
 
- $('[data-modal=consultation]').on('click', function() {
+/* $('[data-modal=consultation]').on('click', function() {
     $('.overlay, #consultation').fadeIn('slow');
 });
 $('.modal__close').on('click', function() {
@@ -139,7 +64,7 @@ validateForms('#consultation-form');
 validateForms('#consultation form');
 validateForms('#order form');
 
- $(document).ready(function(){
+$('input[name=phone]').mask("+7 (999) 999-99-99");
 
 $('form').submit(function(e) {
     e.preventDefault();
@@ -155,5 +80,4 @@ $('form').submit(function(e) {
         $('form').trigger('reset');
     });
     return false;
-});
-});
+}); */
