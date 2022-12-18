@@ -17,44 +17,84 @@ counters.forEach( (item, i) => {
     lines[i].style.width = item.innerHTML;
 });
 
-// Modal
+$(document).ready(function(){
+   
 
-document.addEventListener('DOMContentLoaded', function(){
-    const form = document.getElementById('form');
-    form.addEventListener('submit', formSend);
+});
 
-    async function formSend(e) {
+ 
+    $('[data-modal=contact]').on('click', function() {
+        $('.overlay, #thanks').fadeIn('slow');
+    });
+    $('.modal__close').on ('click', function() {
+        $('.overlay, #thanks').fadeOut('slow')
+    }); 
+
+
+
+     function validateForms(form){
+        $(form).validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2
+                },
+                
+                email: {
+                    required: true,
+                    email: true
+                },
+                text: {
+                    required: true,
+                }
+            },
+            messages: {
+                name: {
+                    required: "Пожалуйста, введите свое имя",
+                    minlength: jQuery.validator.format("Введите {0} символа!")
+                  },
+                email: {
+                    required: "Пожалуйста, введите свою почту",
+                    email: "Неправильно введен адрес почты"
+                  },
+                text: { 
+                    required: "Ваше сообщение"
+                },
+                
+            }
+        });
+    };
+
+    validateForms('#valid');  
+     
+   
+
+     $('form').submit(function(e) {
         e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "mailer/smart.php",
+            data: $(this).serialize()
+        }).done(function() {
+            $(this).find("input").val("");
+            $('#contacts__form').fadeOut(); 
+             $('#thanks').fadeIn('slow');
 
-        let error = formValidate(form);
-        let formData = new FormData(form);
+            $('form').trigger('reset');
+        });
+        return false; 
+
         
 
-        if (error === 0) {
-            form.classList.add('_sending');
-            let response = await fetch('./sendmail.php', {
-                method: 'POST',
-                body: formData
-            });
-            if (response.ok){
-                let result = await response.json();
-                alert(result.message);
-                formPreview.innerHTML = '';
-                form.reset();
-                form.classList.remove('_sending');
+    
+    new WOW().init();  
 
-            } else{
-                alert ("ВНИМАНИЕ! Ваше сообщение не может быть отправлено, потому что GitHub Pages предоставляет только хостинг для статики и не работает с PHP запросами. Данная форма отправки располагается здесь в качестве примера портфолио. ");
-                form.classList.remove('_sending');
-            }
+ }); 
 
-        } else {
-            alert('Пожалуйста, корректно заполните обязательные поля');
-        }
-    }
-})
 
-/* $('[data-modal=consultation]').on('click', function() {
+// Modal
+
+ $('[data-modal=consultation]').on('click', function() {
     $('.overlay, #consultation').fadeIn('slow');
 });
 $('.modal__close').on('click', function() {
@@ -99,7 +139,7 @@ validateForms('#consultation-form');
 validateForms('#consultation form');
 validateForms('#order form');
 
-$('input[name=phone]').mask("+7 (999) 999-99-99");
+ $(document).ready(function(){
 
 $('form').submit(function(e) {
     e.preventDefault();
@@ -115,4 +155,41 @@ $('form').submit(function(e) {
         $('form').trigger('reset');
     });
     return false;
-}); */
+});
+});
+
+document.addEventListener('DOMContentLoaded', function(){
+    const form = document.getElementById('form');
+    form.addEventListener('submit', formSend);
+
+    async function formSend(e) {
+        e.preventDefault();
+
+        let error = formValidate(form);
+        let formData = new FormData(form);
+        
+
+        if (error === 0) {
+            form.classList.add('_sending');
+            let response = await fetch('./sendmail.php', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok){
+                let result = await response.json();
+                alert(result.message);
+                formPreview.innerHTML = '';
+                form.reset();
+                form.classList.remove('_sending');
+
+            } else{
+                alert ("ВНИМАНИЕ! Ваше сообщение не может быть отправлено, потому что GitHub Pages предоставляет только хостинг для статики и не работает с PHP запросами. Данная форма отправки располагается здесь в качестве примера портфолио. ");
+                form.classList.remove('_sending');
+            }
+
+        } else {
+            alert('Пожалуйста, корректно заполните обязательные поля');
+        }
+    }
+})
+
